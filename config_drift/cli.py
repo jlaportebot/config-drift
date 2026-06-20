@@ -234,8 +234,7 @@ def _should_exclude(
         return True
 
     return bool(
-        exclude_patterns
-        and any(fnmatch.fnmatch(relative, pat) for pat in exclude_patterns)
+        exclude_patterns and any(fnmatch.fnmatch(relative, pat) for pat in exclude_patterns)
     )
 
 

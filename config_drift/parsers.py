@@ -177,9 +177,7 @@ def _extract_resources(data: Any, prefix: str, resources: list[ConfigResource]) 
                     _extract_resources(item, f"{new_prefix}[{i}]", resources)
 
 
-def _extract_helm_resources(
-    data: Any, prefix: str, resources: list[ConfigResource]
-) -> None:
+def _extract_helm_resources(data: Any, prefix: str, resources: list[ConfigResource]) -> None:
     """Extract resources from Helm values structure."""
     for key, value in data.items():
         new_prefix = f"{prefix}.{key}" if prefix else key
