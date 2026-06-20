@@ -23,7 +23,7 @@ build/
 *.egg
 
 # Lock files
-uv.lock
+# uv.lock
 
 # IDE
 .idea/
