@@ -34,7 +34,7 @@ class TestKubernetesParser:
         mock_config.load_kube_config.return_value = None
         mock_config.load_incluster_config.side_effect = Exception("not in cluster")
 
-        client = parser._get_api_client()
+        client = parser._get_api_client()  # noqa: SLF001
         mock_config.load_kube_config.assert_called_once_with(
             config_file="/path/to/kubeconfig", context=None
         )
@@ -45,7 +45,7 @@ class TestKubernetesParser:
         parser = KubernetesParser()
         mock_config.load_incluster_config.return_value = None
 
-        client = parser._get_api_client()
+        client = parser._get_api_client()  # noqa: SLF001
         mock_config.load_incluster_config.assert_called_once()
         assert client is not None
 
@@ -53,15 +53,15 @@ class TestKubernetesParser:
     def test_get_api_client_fallback_to_kubeconfig(self, mock_config):
         parser = KubernetesParser()
 
-        # Create a real exception class for ConfigException
-        class ConfigException(Exception):
+        # Create a real exception class for ConfigError
+        class ConfigError(Exception):
             pass
 
-        mock_config.ConfigException = ConfigException
-        mock_config.load_incluster_config.side_effect = ConfigException("not in cluster")
+        mock_config.ConfigException = ConfigError
+        mock_config.load_incluster_config.side_effect = ConfigError("not in cluster")
         mock_config.load_kube_config.return_value = None
 
-        client = parser._get_api_client()
+        client = parser._get_api_client()  # noqa: SLF001
         mock_config.load_incluster_config.assert_called_once()
         mock_config.load_kube_config.assert_called_once_with(context=None)
 
@@ -153,7 +153,7 @@ class TestKubernetesParser:
             },
             "data": {"key": "value"},
         }
-        sanitized = parser._sanitize_resource(resource)
+        sanitized = parser._sanitize_resource(resource)  # noqa: SLF001
         assert "uid" not in sanitized["metadata"]
         assert "resourceVersion" not in sanitized["metadata"]
         assert "generation" not in sanitized["metadata"]
@@ -182,7 +182,7 @@ class TestKubernetesParser:
                 }
             },
         }
-        sanitized = parser._sanitize_resource(resource)
+        sanitized = parser._sanitize_resource(resource)  # noqa: SLF001
         # Top-level metadata fields are sanitized
         assert "uid" not in sanitized.get("metadata", {})
         assert "resourceVersion" not in sanitized.get("metadata", {})
@@ -214,7 +214,7 @@ class TestKubernetesParser:
             "data": {"key": "value"},
         }
 
-        parsed = parser._parse_resource(mock_resource, "default")
+        parsed = parser._parse_resource(mock_resource, "default")  # noqa: SLF001
         assert parsed is not None
         assert parsed.resource_id == "ConfigMap/test-config"
         assert parsed.namespace == "default"
@@ -229,7 +229,7 @@ class TestKubernetesParser:
         mock_resource = Mock()
         mock_resource.to_dict.side_effect = Exception("to_dict failed")
 
-        parsed = parser._parse_resource(mock_resource, "default")
+        parsed = parser._parse_resource(mock_resource, "default")  # noqa: SLF001
         assert parsed is None
 
     @patch("config_drift.parsers.kubernetes.config")
@@ -247,7 +247,7 @@ class TestKubernetesParser:
         mock_cm.metadata.labels = {"app": "test"}
         mock_v1.list_namespaced_config_map.return_value = Mock(items=[mock_cm])
 
-        resources = parser._fetch_resources(mock_api_client, "ConfigMap", "default", None)
+        resources = parser._fetch_resources(mock_api_client, "ConfigMap", "default", None)  # noqa: SLF001
         assert len(resources) == 1
 
     def test_parse_connection_error(self):

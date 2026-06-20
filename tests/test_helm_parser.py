@@ -80,11 +80,13 @@ class TestHelmParser:
         mock_loop.is_running.return_value = False
         mock_loop.run_until_complete.return_value = [mock_release]
 
-        with patch("asyncio.get_event_loop", return_value=mock_loop):
-            with patch("config_drift.parsers.helm.Client", return_value=mock_client):
-                result = parser.parse("releases", namespace="default")
-                assert len(result.configs) == 1
-                assert result.configs[0].resource_id == "release/my-release"
+        with (
+            patch("asyncio.get_event_loop", return_value=mock_loop),
+            patch("config_drift.parsers.helm.Client", return_value=mock_client),
+        ):
+            result = parser.parse("releases", namespace="default")
+            assert len(result.configs) == 1
+            assert result.configs[0].resource_id == "release/my-release"
 
     @patch("config_drift.parsers.helm.Client")
     def test_parse_specific_releases(self, mock_client_class):
@@ -131,10 +133,12 @@ class TestHelmParser:
         mock_loop = Mock()
         mock_loop.is_running.return_value = True  # Running loop, can't run
 
-        with patch("config_drift.parsers.helm.Client", return_value=mock_client):
-            with patch("asyncio.get_event_loop", return_value=mock_loop):
-                releases = parser._list_releases(mock_client, "default")
-                assert releases == []
+        with (
+            patch("config_drift.parsers.helm.Client", return_value=mock_client),
+            patch("asyncio.get_event_loop", return_value=mock_loop),
+        ):
+            releases = parser._list_releases(mock_client, "default")  # noqa: SLF001
+            assert releases == []
 
     def test_parse_release_with_exception(self):
         parser = HelmParser()
@@ -143,10 +147,12 @@ class TestHelmParser:
         mock_loop.is_running.return_value = False
         mock_loop.run_until_complete.side_effect = Exception("Release not found")
 
-        with patch("config_drift.parsers.helm.Client", return_value=mock_client):
-            with patch("asyncio.get_event_loop", return_value=mock_loop):
-                result = parser._parse_release(mock_client, "bad-release", "default")
-                assert result is None
+        with (
+            patch("config_drift.parsers.helm.Client", return_value=mock_client),
+            patch("asyncio.get_event_loop", return_value=mock_loop),
+        ):
+            result = parser._parse_release(mock_client, "bad-release", "default")  # noqa: SLF001
+            assert result is None
 
 
 if __name__ == "__main__":

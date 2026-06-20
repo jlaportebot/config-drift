@@ -124,7 +124,7 @@ volumes:
             "extends": {"service": "base"},
             "ports": ["80:80"],
         }
-        normalized = parser._normalize_service(service)
+        normalized = parser._normalize_service(service)  # noqa: SLF001
         assert "container_name" not in normalized
         assert "build" not in normalized
         assert "deploy" not in normalized
@@ -144,7 +144,7 @@ volumes:
             "volumes": {"data": {}},
             "networks": {"frontend": {}},
         }
-        normalized = parser._normalize_compose(content)
+        normalized = parser._normalize_compose(content)  # noqa: SLF001
         assert normalized["version"] == "3.9"
         assert "services" in normalized
         assert "volumes" in normalized
@@ -209,7 +209,7 @@ volumes:
                 }
             }
         }
-        ports = parser._extract_ports(attrs)
+        ports = parser._extract_ports(attrs)  # noqa: SLF001
         assert len(ports) == 3
         assert ports[0]["container"] == "80/tcp"
         assert ports[0]["host"] == "8080"
@@ -224,7 +224,7 @@ volumes:
                 {"Type": "tmpfs", "Destination": "/tmp"},
             ]
         }
-        volumes = parser._extract_volumes(attrs)
+        volumes = parser._extract_volumes(attrs)  # noqa: SLF001
         assert len(volumes) == 2
         assert "/host/data:/container/data" in volumes
         assert "my-volume:/container/vol" in volumes

@@ -67,7 +67,7 @@ class TestTerraformParser:
             {"variable": {'"region"': {"default": '"us-east-1"'}}},
             {"variable": {'"environment"': {"default": '"prod"'}}},
         ]
-        normalized = parser._normalize_hcl(parsed)
+        normalized = parser._normalize_hcl(parsed)  # noqa: SLF001
         assert "variable" in normalized
 
     def test_parse_state_file(self, tmp_path):
@@ -111,7 +111,7 @@ class TestTerraformParser:
             {"variable": {'"region"': {"default": '"us-east-1"'}}},
             {"resource": {'"aws_instance"': {'"web"': {"ami": '"ami-12345"'}}}},
         ]
-        normalized = parser._normalize_hcl(parsed)
+        normalized = parser._normalize_hcl(parsed)  # noqa: SLF001
         assert "variable" in normalized
         assert "resource" in normalized
 
@@ -140,7 +140,7 @@ class TestTerraformParser:
                 }
             ],
         }
-        normalized = parser._normalize_state(state)
+        normalized = parser._normalize_state(state)  # noqa: SLF001
         assert normalized["version"] == 4
         assert normalized["terraform_version"] == "1.5.0"
         assert len(normalized["resources"]) == 1
@@ -159,7 +159,7 @@ class TestTerraformParser:
             "owner_id": "12345",
             "creation_timestamp": "2024-01-01T00:00:00Z",
         }
-        filtered = parser._filter_attributes(attributes)
+        filtered = parser._filter_attributes(attributes)  # noqa: SLF001
         assert "id" not in filtered
         assert "arn" not in filtered
         assert "owner_id" not in filtered
@@ -180,7 +180,7 @@ class TestTerraformParser:
             mock_tf.init.return_value = (0, "", "")
             mock_tf.plan.return_value = (0, "Plan output", "")
 
-            result = parser._parse_plan(tf_dir, {})
+            result = parser._parse_plan(tf_dir, {})  # noqa: SLF001
             # Should return a config or None
             assert result is not None or result is None  # Either is fine for this test
 
