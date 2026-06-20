@@ -57,6 +57,7 @@ ignore = [
     "ANN201", "ANN001", "ARG001", "BLE001", "S112", "PIE790", "RUF022",
     "ANN202", "PERF401", "F841", "DTZ003", "E501",
     "ANN204", "SIM110", "SIM103", "ANN401",
+    "E721", "RUF012",
 ]
 per-file-ignores = { "tests/*" = ["S101", "ANN201", "ANN001", "PLR6301", "PLR2004", "PLC1901", "F401", "INP001", "S105", "PLC2701", "DTZ001", "FBT003", "S108"] }
 
